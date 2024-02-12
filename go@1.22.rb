@@ -1,32 +1,15 @@
 class GoAT122 < Formula
-    desc "Open source programming language to build simple/reliable/efficient software"
+    desc "Go"
     homepage "https://go.dev/"
-    url "https://go.dev/dl/go1.22.0.src.tar.gz"
-    mirror "https://fossies.org/linux/misc/go1.22.0.src.tar.gz"
-    sha256 "4d196c3d41a0d6c1dfc64d04e3cc1f608b0c436bd87b7060ce3e23234e1f4d5c"
-    license "BSD-3-Clause"
+
+    keg_only :versioned_formula
   
-    livecheck do
-      url "https://go.dev/dl/?mode=json"
-      regex(/^go[._-]?v?(1\.20(?:\.\d+)*)[._-]src\.t.+$/i)
-      strategy :json do |json, regex|
-        json.map do |release|
-          next if release["stable"] != true
-          next if release["files"].none? { |file| file["filename"].match?(regex) }
-  
-          release["version"][/(\d+(?:\.\d+)+)/, 1]
-        end
-      end
-    end
-  
-    bottle do
-      sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bf8e388b09134164717cd52d3285a4ab3b68691b80515212da0e9f56f518fb1e"
-      sha256 cellar: :any_skip_relocation, arm64_ventura:  "bf8e388b09134164717cd52d3285a4ab3b68691b80515212da0e9f56f518fb1e"
-      sha256 cellar: :any_skip_relocation, arm64_monterey: "bf8e388b09134164717cd52d3285a4ab3b68691b80515212da0e9f56f518fb1e"
-      sha256 cellar: :any_skip_relocation, sonoma:         "ebca81df938d2d1047cc992be6c6c759543cf309d401b86af38a6aed3d4090f4"
-      sha256 cellar: :any_skip_relocation, ventura:        "ebca81df938d2d1047cc992be6c6c759543cf309d401b86af38a6aed3d4090f4"
-      sha256 cellar: :any_skip_relocation, monterey:       "ebca81df938d2d1047cc992be6c6c759543cf309d401b86af38a6aed3d4090f4"
-      sha256 cellar: :any_skip_relocation, x86_64_linux:   "6a63fef0e050146f275bf02a0896badfe77c11b6f05499bb647e7bd613a45a10"
+    if OS.mac? && Hardware::CPU.intel?
+      url "https://go.dev/dl/go1.22.0.darwin-amd64.tar.gz"
+      sha256 "ebca81df938d2d1047cc992be6c6c759543cf309d401b86af38a6aed3d4090f4"
+    elsif OS.mac? && Hardware::CPU.arm?
+      url "https://go.dev/dl/go1.22.0.darwin-arm64.tar.gz"
+      sha256 "bf8e388b09134164717cd52d3285a4ab3b68691b80515212da0e9f56f518fb1e"
     end
   
     keg_only :versioned_formula
